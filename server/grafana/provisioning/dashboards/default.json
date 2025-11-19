@@ -6,5 +6,20 @@
   "schemaVersion": 36,
   "version": 1,
   "refresh": "5s",
-  "panels": []
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Measurements",
+      "datasources": {
+        "type": "influxdb",
+        "uid": "influxdb"
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"mydb\") |> range(start: -30m) |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")",
+          "refId": "A"
+        }
+      ]
+    }
+  ]
 }
