@@ -3,7 +3,7 @@ import time
 
 
 class DelayServer:
-    def __init__(self, port=80, initial_delay=1.0, timeout=0.01):
+    def __init__(self, port=80, initial_delay=1.0, timeout=0.5):
         self.delay_s = initial_delay
         self.timeout = timeout
         self.port = port
