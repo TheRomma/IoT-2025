@@ -17,13 +17,15 @@ client.connect(
 
 # Publish measurements.
 while True:
-	client.publish(
-		"sensors/measurements",
-		'{"sensor_id": "sensor_0", "location": "olohuone", ' + '"temperature": {}, "pressure": {}'.format(
-			random.randrange(10.0, 20.0),
-			random.randrange(0.0, 5.0)
-		)+'}'
-	)
+	for i in range(10):
+		client.publish(
+			"sensors/measurements",
+			'{"sensor_id": "sensor_'+str(i+1)+'", "location": "room_'+str(i+1)+'", ' + '"temperature": {}, "pressure": {}'.format(
+				random.randrange(70.0, 90.0),
+				random.randrange(0.0, 5.0),
+			)+'}'
+		)
+
 	time.sleep(1.0)
 
 # Disconnect client.
