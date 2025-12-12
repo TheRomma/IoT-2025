@@ -16,6 +16,9 @@ MQTT_USER = "mqttuser"
 MQTT_PASS = "mqttpass"
 MQTT_TOPIC = "sensors/measurements"
 
+CLIENT_ID = ""
+LOCATION = ""
+
 LED = machine.Pin('LED', machine.Pin.OUT)
 
 def control_callback(topic, msg):
@@ -32,7 +35,7 @@ mqtt = MQTTSender(
     user=MQTT_USER,
     password=MQTT_PASS,
     topic=MQTT_TOPIC,
-    client_id="pico_0"
+    client_id=CLIENT_ID
 )
 
 wlan = connect_wifi(SSID, PASS)
@@ -68,8 +71,8 @@ while True:
         ))
 
         mqtt.publish(
-            sensor_id="sensor_pico_0",
-            location="olohuone",
+            sensor_id=CLIENT_ID,
+            location=LOCATION,
             temperature=t,
             pressure=p
         )
