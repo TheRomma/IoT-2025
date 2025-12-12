@@ -5,6 +5,7 @@ from mqtt_sender import MQTTSender
 
 from machine import Pin, I2C
 from time import ticks_ms, ticks_diff
+import time
 import json
 
 SSID = "TW-EAV510AC_2.4G_3E80"
@@ -15,26 +16,23 @@ MQTT_USER = "mqttuser"
 MQTT_PASS = "mqttpass"
 MQTT_TOPIC = "sensors/measurements"
 
-CLIENT_ID = "sensor_0"
-LOCATION = "olohuone"
-
 LED = machine.Pin('LED', machine.Pin.OUT)
 
 def control_callback(topic, msg):
-	print('Received: ', msg)
-	data = json.loads(msg)
-	control_val = data.get('control', 0)
-	if control_val == 1:
-		LED.value(1)
-	else:
-		LED.value(0)
+    print('Received: ', msg)
+    data = json.loads(msg)
+    control_val = data.get('control', 0)
+    if control_val == 1:
+        LED.value(1)
+    else:
+        LED.value(0)
 
 mqtt = MQTTSender(
     server=MQTT_SERVER,
     user=MQTT_USER,
     password=MQTT_PASS,
     topic=MQTT_TOPIC,
-    client_id=CLIENT_ID
+    client_id="pico_0"
 )
 
 wlan = connect_wifi(SSID, PASS)
@@ -51,6 +49,8 @@ last = ticks_ms()
 
 # Start MQTT connection
 mqtt.connect()
+mqtt.set_callback(control_callback)
+mqtt.subscribe('control/temperature')
 
 while True:
 
@@ -68,8 +68,11 @@ while True:
         ))
 
         mqtt.publish(
-            sensor_id=CLIENT_ID,
-            location=LOCATION,
+            sensor_id="sensor_pico_0",
+            location="olohuone",
             temperature=t,
             pressure=p
         )
+        mqtt.check_msg()
+
+

@@ -26,15 +26,15 @@ class MQTTSender:
             print("MQTT connected!")
         except Exception as e:
             print("MQTT connection failed:", e)
-
+            
     def subscribe(self, topic):
-	self.client.subscribe(topic)
+        self.client.subscribe(topic)
 
     def set_callback(self, callback):
-	self.client.set_callback(callback)
+        self.client.set_callback(callback)
 
-    def check_control(self):
-	self.client.check_msg()
+    def check_msg(self):
+        self.client.check_msg()
 
     def publish(self, sensor_id, location, temperature, pressure):
         """Publish a JSON message."""
@@ -59,3 +59,5 @@ class MQTTSender:
             self.client.disconnect()
         except:
             pass
+
+
